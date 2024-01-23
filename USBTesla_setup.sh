@@ -6,6 +6,10 @@
 ## Configure your wifi via the raspberry pi imager
 ## Enable SSH access via raspberry pi imager
 ## Configure hostname via the raspberry pi imager. Recommend using USBTesla
+## Power your Pi via the USB port and not the PWR port. Use your computer first to validate the setup
+## Find your ip address or use "hostname.local" to SSH into your Pi
+## Run the installer: 
+## bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/USBTesla_setup.sh)"
 
 # Update Raspberry Pi for good luck
 echo "Updating and upgrading Raspberry Pi..."
