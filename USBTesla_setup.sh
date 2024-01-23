@@ -10,9 +10,33 @@ echo "Configuring Raspberry Pi for USB gadget mode..."
 echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
 echo "dwc2" | sudo tee -a /etc/modules
 
-# Create and format the USB storage file (1GB)
-echo "Creating and formatting the USB storage file..."
-sudo dd bs=1M if=/dev/zero of=/piusb.bin count=1024
+# Prompt the user for the size
+PS3="Select USB storage size (in GB): "
+options=("4GB" "8GB" "16GB")
+select size_option in "${options[@]}"
+do
+  case $size_option in
+    "4GB")
+      file_size=4096  # 4GB in megabytes
+      break
+      ;;
+    "8GB")
+      file_size=8192  # 8GB in megabytes
+      break
+      ;;
+    "16GB")
+      file_size=16384  # 16GB in megabytes
+      break
+      ;;
+    *)
+      echo "Invalid option, please select a valid size."
+      ;;
+  esac
+done
+echo "Creating and formatting the USB storage file (Size: $size_option)..."
+
+sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size
+sudo dd bs=1M if=/dev/zero of=/piusb.bin count=8192
 sudo mkdosfs /piusb.bin -F 32 -I
 
 # Create mount point and update fstab
@@ -22,7 +46,7 @@ echo "/piusb.bin /mnt/usb_share vfat users,umask=000 0 2" | sudo tee -a /etc/fst
 sudo mount -a
 
 # Enable mass storage device
-sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1
+#sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1
 
 #!/bin/bash
 
