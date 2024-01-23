@@ -33,6 +33,8 @@ do
       ;;
   esac
 done
+
+# Creating the storage area based on selected size
 echo "Creating and formatting the USB storage file (Size: $size_option)..."
 
 sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size
@@ -46,9 +48,7 @@ echo "/piusb.bin /mnt/usb_share vfat users,umask=000 0 2" | sudo tee -a /etc/fst
 sudo mount -a
 
 # Enable mass storage device
-#sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1
-
-#!/bin/bash
+sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1
 
 # Install the watchdog library
 echo "Installing the watchdog library..."
@@ -64,6 +64,7 @@ echo "Creating systemd service unit file for usbshare..."
 sudo tee /etc/systemd/system/usbshare.service > /dev/null <<EOL
 [Unit]
 Description=USB Share Watchdog
+After=network.target
 
 [Service]
 Type=simple
@@ -106,6 +107,8 @@ echo "Enabling and starting Filebrowser service..."
 sudo systemctl daemon-reload
 sudo systemctl enable filebrowser.service
 sudo systemctl start filebrowser.service
+
+
 
 # Message for the user
 PI_IP=$(hostname -I | awk '{print $1}')
