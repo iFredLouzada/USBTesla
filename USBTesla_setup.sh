@@ -21,6 +21,44 @@ sudo mkdir /mnt/usb_share
 echo "/piusb.bin /mnt/usb_share vfat users,umask=000 0 2" | sudo tee -a /etc/fstab
 sudo mount -a
 
+# Enable mass storage device
+sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1
+
+#!/bin/bash
+
+# Install the watchdog library
+echo "Installing the watchdog library..."
+sudo pip3 install watchdog
+
+# Download the usb_share.py script
+echo "Downloading the usb_share.py script..."
+sudo wget http://rpf.io/usbzw -O /usr/local/share/usb_share.py
+sudo chmod +x /usr/local/share/usb_share.py
+
+# Create a systemd service unit file for usbshare
+echo "Creating systemd service unit file for usbshare..."
+sudo tee /etc/systemd/system/usbshare.service > /dev/null <<EOL
+[Unit]
+Description=USB Share Watchdog
+
+[Service]
+Type=simple
+ExecStart=/usr/local/share/usb_share.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+# Reload systemd and enable/start the usbshare service
+echo "Reloading systemd..."
+sudo systemctl daemon-reload
+echo "Enabling and starting the usbshare service..."
+sudo systemctl enable usbshare.service
+sudo systemctl start usbshare.service
+
+echo "USB Share Watchdog setup complete."
+
 # Install Filebrowser
 echo "Installing Filebrowser..."
 curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
@@ -46,4 +84,11 @@ sudo systemctl enable filebrowser.service
 sudo systemctl start filebrowser.service
 
 # Message for the user
-echo "Setup complete. You can access Filebrowser by opening a web browser and entering the Raspberry Pi's IP address followed by port 80 (e.g., http://<your_pi_ip>:80). The default username is 'admin' and the default password is 'admin'."
+PI_IP=$(hostname -I | awk '{print $1}')
+PI_HOSTNAME=$(hostname)
+
+echo "Setup complete. You can access Filebrowser by opening a web browser and visiting the following URL:"
+echo "Using IP address: http://${PI_IP}"
+echo "Using hostname: http://${PI_HOSTNAME}.local"
+echo "The default username is 'admin' and the default password is 'admin'."
+
