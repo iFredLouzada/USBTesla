@@ -1,12 +1,18 @@
 #!/bin/bash
+# Created by Fred Louzada
+# Requirements:
+## Use a Raspberry pi Zero 
+## Image it using raspberry pi imager and load it with Raspian OS 32-Bit Legacy without desktop
+## Configure your wifi via the raspberry pi imager
+## Enable SSH access via raspberry pi imager
+## Configure hostname via the raspberry pi imager. Recommend using USBTesla
 
-# Update and Upgrade Raspberry Pi
+# Update Raspberry Pi for good luck
 echo "Updating and upgrading Raspberry Pi..."
 sudo apt-get update
 
 # Configure Raspberry Pi settings for USB gadget mode
 # Enables the USB driver for gadget mode
-
 echo "Configuring Raspberry Pi for USB gadget mode"
 echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt >/dev/null
 echo "dwc2" | sudo tee -a /etc/modules >/dev/null
@@ -123,4 +129,3 @@ echo "Setup complete. You can access Filebrowser by opening a web browser and vi
 echo "Using IP address: http://${PI_IP}"
 echo "Using hostname: http://${PI_HOSTNAME}.local"
 echo "The default username is 'admin' and the default password is 'admin'."
-
