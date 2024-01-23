@@ -50,6 +50,7 @@ done
 # Creating the storage area based on selected size
 
 echo "Creating and formatting the USB storage file (Size: $size_option) "
+echo "Sit back and relax, depending on the size you picked this might take some time ..."
 sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size status=progress
 sudo mkdosfs /piusb.bin -F 32 -I
 
@@ -62,7 +63,7 @@ sudo mount -a
 sync
 
 # Enable mass storage device
-sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1
+#sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1
 
 # Install the watchdog library
 echo "Installing the watchdog library"
@@ -128,8 +129,22 @@ sudo systemctl start filebrowser.service
 # Message for the user
 PI_IP=$(hostname -I | awk '{print $1}')
 PI_HOSTNAME=$(hostname)
-
+clear
+echo "----------------------------------------------------------------------------------------------------------"
 echo "Setup complete. You can access Filebrowser by opening a web browser and visiting the following URL:"
 echo "Using IP address: http://${PI_IP}"
 echo "Using hostname: http://${PI_HOSTNAME}.local"
 echo "The default username is 'admin' and the default password is 'admin'."
+echo "----------------------------------------------------------------------------------------------------------"
+# Start a 10-second countdown
+echo "Rebooting the Raspberry Pi in 10 seconds, after reboot the pi will restart and come back as a usb storage device"
+echo "Test that it works on your computer first before moving it to your car"
+
+for ((i=10; i>=1; i--)); do
+  echo "Countdown: $i seconds..."
+  sleep 1
+done
+
+# Reboot the Raspberry Pi
+echo "Rebooting now..."
+sudo reboot
