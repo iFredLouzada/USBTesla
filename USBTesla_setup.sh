@@ -3,14 +3,17 @@
 # Update and Upgrade Raspberry Pi
 echo "Updating and upgrading Raspberry Pi..."
 sudo apt-get update
-sudo apt-get upgrade -y
 
 # Configure Raspberry Pi settings for USB gadget mode
-echo "Configuring Raspberry Pi for USB gadget mode..."
-echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
-echo "dwc2" | sudo tee -a /etc/modules
+# Enables the USB driver for gadget mode
+
+echo "Configuring Raspberry Pi for USB gadget mode"
+echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt >/dev/null
+echo "dwc2" | sudo tee -a /etc/modules >/dev/null
 
 # Prompt the user for the size
+# User has the ability to pick the size of storage
+
 PS3="Select USB storage size (in GB): "
 options=("4GB" "8GB" "16GB")
 select size_option in "${options[@]}"
@@ -35,23 +38,25 @@ do
 done
 
 # Creating the storage area based on selected size
-echo "Creating and formatting the USB storage file (Size: $size_option)..."
 
-sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size
-sudo dd bs=1M if=/dev/zero of=/piusb.bin count=8192
+echo "Creating and formatting the USB storage file (Size: $size_option) "
+sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size status=progress
 sudo mkdosfs /piusb.bin -F 32 -I
 
 # Create mount point and update fstab
-echo "Creating mount point and updating fstab..."
+
+echo "Creating mount point and updating fstab"
 sudo mkdir /mnt/usb_share
-echo "/piusb.bin /mnt/usb_share vfat users,umask=000 0 2" | sudo tee -a /etc/fstab
+echo "/piusb.bin /mnt/usb_share vfat users,umask=000 0 2" | sudo tee -a /etc/fstab >/dev/null
 sudo mount -a
+sync
 
 # Enable mass storage device
 sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1
 
 # Install the watchdog library
-echo "Installing the watchdog library..."
+echo "Installing the watchdog library"
+sudo apt-get install pip -y
 sudo pip3 install watchdog
 
 # Download the usb_share.py script
@@ -60,11 +65,11 @@ sudo wget http://rpf.io/usbzw -O /usr/local/share/usb_share.py
 sudo chmod +x /usr/local/share/usb_share.py
 
 # Create a systemd service unit file for usbshare
-echo "Creating systemd service unit file for usbshare..."
+echo "Creating systemd service unit file for usbshare"
+
 sudo tee /etc/systemd/system/usbshare.service > /dev/null <<EOL
 [Unit]
 Description=USB Share Watchdog
-After=network.target
 
 [Service]
 Type=simple
