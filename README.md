@@ -17,7 +17,17 @@ A simple and quick way to create a wifi usb drive using a Raspberry Pi SBC to ea
 <p>1x MicroSD card of at least 32Gb. This script will ask you to choose between 4Gb, 8Gb or 16Gb</p>
 <p>1x Power AND Data cable to connect the Raspberry Pi to your Tesla.</p>
 
-<h2> Install instructions</h2>
+<h2> Installation instructions</h2>
+
+<p>There are two steps you'll need to complete before installing USBTesla.</p>
+<p>- Prepare the Raspberry Pi</p>
+<p>- Power On and Connect to the Raspberry Pi</p>
+
+<p>After these two steps, installation is very simple. </p>
+<p>Just run the following command from your Pi</p>
+<code>bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/USBTesla_setup.sh)"</code>
+
+<h2>Preparing the Raspberry Pi</h2>
 
 <p>Download and install Raspberry Pi Imager to your computer - https://www.raspberrypi.com/software/ </p>
 <img width="688" alt="pi1" src="https://github.com/iFredLouzada/USBTesla/assets/1254565/c286cef3-3865-4e26-8e26-22bde1d82728">
@@ -40,14 +50,40 @@ A simple and quick way to create a wifi usb drive using a Raspberry Pi SBC to ea
 <p>Select the Services tab and ensure SSH is enabled</p> 
 <img width="547" alt="Screenshot 2024-01-23 at 7 43 59 PM" src="https://github.com/iFredLouzada/USBTesla/assets/1254565/bc03a659-6aff-4d0a-983b-eb36ddcf8896">
 <p>Hit 'SAVE' once you're done.</p>
-
-
 <p>Confirm and Install: Click YES to confirm your custom settings. A warning will pop up about erasing the MicroSD card. Proceed with YES, and the Imager will work its magic. When it's done, it'll let you know it's time to remove the MicroSD card.</p>
+
+<h2>Power On and Connect to the Raspberry Pi</h2>
+
+<p>Once you've finished with the Raspberry Pi Imager, gently remove the MicroSD card from your computer and slot it into your Pi Zero. It's like inserting the key to a treasure chest!
+<p>Connect to Power and Data: Now, grab a USB power and data cable. For now, we're connecting it to your computer, not your Tesla. We're just getting warmed up!
+
+<h3>Choosing the Right Port</h3>h3>
+<p>Take a closer look at your Pi Zero. You'll notice it flaunts two micro USB ports. One is labeled 'PWR' and the other 'USB'.
+
+<p>PWR Port: This one's a one-trick pony – it only provides power.
+<p>USB Port: This is your star player. It's a dual-threat, offering both POWER and DATA capabilities. Make sure your cable is up for the task – it needs to handle both power and data.
+
+<h3>Connecting to Your Raspberry Pi</h3>
+
+<p>Remember the hostname you set in the Raspberry Pi Imager? It's showtime for 'USBTesla' (or whatever creative name you chose).</p>
+<p>ping usbtesla.local</p>
+
+<p>Replace 'usbtesla' with your hostname if you chose a different one. For example, ping modelx.local for the hostname 'modelx'.</p>
+<p>Note the IP Address: If the stars align and your network is feeling friendly, the command will return an IP address, something like 192.168.0.121. Jot this down; it's your golden key.</p>
+<p><b>NOTE: Give enough time after plugin in your Raspberry Pi for it to boot. The first time, this process might take 5-10 minutes. Only proceed when the ping command is succesful</b></p>
+
+<p>Remote Connection Time: Still in your command prompt or terminal, it's time to remotely connect to your Pi. Use the following command:</p>
+
+<code>ssh pi@usbtesla.local</code>
+
+<p>Success: If all goes well, you'll be greeted by the welcoming text of your Raspberry Pi's command line. You're in!</p>
+<p></p>
+<p>Just run the following command from your Pi</p>
+<code>bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/USBTesla_setup.sh)"</code>
 
 <h2>Credits:</h2>
 
-FileBrowser is a simple, easy to use web interface for file management. https://github.com/filebrowser/filebrowser
-
-MagPi, the official raspberry pi magazine, in particular this article https://magpi.raspberrypi.com/articles/pi-zero-w-smart-usb-flash-drive
+<p>FileBrowser is a simple, easy to use web interface for file management. https://github.com/filebrowser/filebrowser</p>
+<p>MagPi, the official raspberry pi magazine, in particular this article https://magpi.raspberrypi.com/articles/pi-zero-w-smart-usb-flash-drive</p>
 
 
