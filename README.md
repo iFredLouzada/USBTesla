@@ -14,12 +14,31 @@ A simple and quick way to create a wifi usb drive using a Raspberry Pi SBC to ea
 <h2>Requirements:</h2>
 
 <p>1x Raspberry Pi Zero</p>
-<p>1x MicroSD card of appropriate for the size of the USB device you want to create. This script will ask you to choose between 2Gb, 4Gb or 8Gb</p>
+<p>1x MicroSD card of at least 32Gb. This script will ask you to choose between 4Gb, 8Gb or 16Gb</p>
 <p>1x Power AND Data cable to connect the Raspberry Pi to your Tesla.</p>
+
+<h2> Install instructions</h2>
+
+<p>Download and install Raspberry Pi Imager to your computer - https://www.raspberrypi.com/software/ </p>
+<img width="688" alt="pi1" src="https://github.com/iFredLouzada/USBTesla/assets/1254565/c286cef3-3865-4e26-8e26-22bde1d82728">
+<p>Launch Raspberry Pi Imager</p>
+<p>Plug your Micro SD card into your computer's card reader.</p>
+<p>Click 'Choose device' and scroll to select 'Raspberry Pi Zero' (this covers Zero, Zero W, and Zero WH).</p>
+<p>Click 'Choose OS'. </p>
+<p>Click Raspberry Pi OS (Other) and then 'Raspberry Pi OS Legacy 32 bit lite' – no need for a graphical interface and extra software.</p>
+<p>Click on 'Storage' and carefully select your MicroSD card from the list. Watch out for the USB symbol indicating an external device. Choose wisely to avoid any mishaps!</p>
+<p>After clicking NEXT, the Imager will ask if you want to customize the OS. Hit 'EDIT Settings'</p>
+
+<p>Hostname: Name it something simple like 'USBTesla' for easy access later.</p>
+<p>Username and Password: The defaults are “pi” and “raspberry”, but feel free to set your own for added security.</p>
+<p>Wireless LAN Details: Enter your Wi-Fi's SSID and password. Set the Wireless LAN country (mine's CA) and adjust the locale settings to match your timezone and keyboard input.</p>
+<p>Hit 'SAVE' once you're done.</p>
+<p>Confirm and Install: Click YES to confirm your custom settings. A warning will pop up about erasing the MicroSD card. Proceed with YES, and the Imager will work its magic. When it's done, it'll let you know it's time to remove the MicroSD card.</p>
 
 <h2>Credits:</h2>
 
 FileBrowser is a simple, easy to use web interface for file management. https://github.com/filebrowser/filebrowser
 
 MagPi, the official raspberry pi magazine, in particular this article https://magpi.raspberrypi.com/articles/pi-zero-w-smart-usb-flash-drive
+
 
