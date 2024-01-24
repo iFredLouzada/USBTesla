@@ -57,7 +57,7 @@ A simple and quick way to create a wifi usb drive using a Raspberry Pi SBC to ea
 <p>Once you've finished with the Raspberry Pi Imager, gently remove the MicroSD card from your computer and slot it into your Pi Zero. It's like inserting the key to a treasure chest!
 <p>Connect to Power and Data: Now, grab a USB power and data cable. For now, we're connecting it to your computer, not your Tesla. We're just getting warmed up!
 
-<h3>Choosing the Right Port</h3>h3>
+<h3>Choosing the Right Port</h3>
 <p>Take a closer look at your Pi Zero. You'll notice it flaunts two micro USB ports. One is labeled 'PWR' and the other 'USB'.
 
 <p>PWR Port: This one's a one-trick pony – it only provides power.
