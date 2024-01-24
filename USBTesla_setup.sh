@@ -72,7 +72,7 @@ sudo pip3 install watchdog
 
 # Download the usb_share.py script
 echo "Downloading the usb_share.py script..."
-sudo wget http://rpf.io/usbzw -O /usr/local/share/usb_share.py
+sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/usb_share.py -O /usr/local/share/usb_share.py
 sudo chmod +x /usr/local/share/usb_share.py
 
 # Create a systemd service unit file for usbshare
@@ -123,8 +123,6 @@ echo "Enabling and starting Filebrowser service..."
 sudo systemctl daemon-reload
 sudo systemctl enable filebrowser.service
 sudo systemctl start filebrowser.service
-
-
 
 # Message for the user
 PI_IP=$(hostname -I | awk '{print $1}')
