@@ -60,6 +60,7 @@ echo "Creating mount point and updating fstab"
 sudo mkdir /mnt/usb_share
 echo "/piusb.bin /mnt/usb_share vfat users,umask=000 0 2" | sudo tee -a /etc/fstab >/dev/null
 sudo mount -a
+wget get -P /mnt/usb_share https://github.com/iFredLouzada/USBTesla/raw/main/LockChime.wav
 sync
 
 # Enable mass storage device
