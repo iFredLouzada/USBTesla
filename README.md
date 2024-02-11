@@ -7,9 +7,10 @@ A simple and quick way to create a wifi usb drive using a Raspberry Pi SBC to ea
 <p>Tesla recent holiday update allows you to change the sound your car makes when you lock it, this is called the Lock chime. In order to change the sound you need to plug in a USB Drive to your car and have a file called LockChime.wav on the root of your USB.</p>
 <p>For vehicles equipmed with the Pedestrian Warning Sound Tesla allows you to change the sound of your Horn. This can be used to play any sound (to the outside) via the external loudspeaker.</p>
 <p>All you need to play your own sounds is a USB stick. This can be a "retrofitted" one (IMPORTANT The USB stick must be formatted in ExFAT format), but also the original USB stick supplied by Tesla, which is located in the glove compartment.</p>
-<p>But who wants to keep bringing the USB drive inside to change these sounds ? :)</p>
 
-<p>This is really just a script that automates the process to create the USB Drive that can be accessed via your browser. After the instalation is complete you can access the files by poiting your browser to http://USBTesla.local </p>
+<h2>But who wants to keep bringing the USB drive inside to change these sounds?</h2>
+
+<p>This is USBTesla. Just a script that automates the process to create the USB Drive that can be accessed via your browser. After the instalation is complete you can access the files by poiting your browser to http://USBTesla.local </p>
 
 <h2>Requirements:</h2>
 
