@@ -26,8 +26,7 @@ Step 1: [Prepare your Raspberry Pi Zero](https://github.com/iFredLouzada/USBTesl
 Step 2: [Connect to your Raspberry Pi Zero](https://github.com/iFredLouzada/USBTesla/wiki/Power-On-and-Connect-to-the-Raspberry-Pi)
 
 
-<p>After these two steps, installation is very simple. </p>
-<p>Just run the following command from your Pi</p>
+<p>After these two steps, just run the following command from your Pi</p>
 <code>bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/USBTesla_setup.sh)"</code>
 
 <h2>Credits:</h2>
