@@ -27,35 +27,6 @@ A simple and quick way to create a wifi usb drive using a Raspberry Pi SBC to ea
 <p>Just run the following command from your Pi</p>
 <code>bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/USBTesla_setup.sh)"</code>
 
-<h2>Power On and Connect to the Raspberry Pi</h2>
-
-<p>Once you've finished with the Raspberry Pi Imager, gently remove the MicroSD card from your computer and slot it into your Pi Zero. It's like inserting the key to a treasure chest!
-<p>Connect to Power and Data: Now, grab a USB power and data cable. For now, we're connecting it to your computer, not your Tesla. We're just getting warmed up!
-
-<h3>Choosing the Right Port</h3>
-<p>Take a closer look at your Pi Zero. You'll notice it flaunts two micro USB ports. One is labeled 'PWR' and the other 'USB'.
-
-<p>PWR Port: This one's a one-trick pony – it only provides power.
-<p>USB Port: This is your star player. It's a dual-threat, offering both POWER and DATA capabilities. Make sure your cable is up for the task – it needs to handle both power and data.
-
-<h3>Connecting to Your Raspberry Pi</h3>
-
-<p>Remember the hostname you set in the Raspberry Pi Imager? It's showtime for 'USBTesla' (or whatever creative name you chose).</p>
-<p>ping usbtesla.local</p>
-
-<p>Replace 'usbtesla' with your hostname if you chose a different one. For example, ping modelx.local for the hostname 'modelx'.</p>
-<p>Note the IP Address: If the stars align and your network is feeling friendly, the command will return an IP address, something like 192.168.0.121. Jot this down; it's your golden key.</p>
-<p><b>NOTE: Give enough time after plugin in your Raspberry Pi for it to boot. The first time, this process might take 5-10 minutes. Only proceed when the ping command is succesful</b></p>
-
-<p>Remote Connection Time: Still in your command prompt or terminal, it's time to remotely connect to your Pi. Use the following command:</p>
-
-<code>ssh pi@usbtesla.local</code>
-
-<p>Success: If all goes well, you'll be greeted by the welcoming text of your Raspberry Pi's command line. You're in!</p>
-<p></p>
-<p>Just run the following command from your Pi</p>
-<code>bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/USBTesla_setup.sh)"</code>
-
 <h2>Credits:</h2>
 
 <p>FileBrowser is a simple, easy to use web interface for file management. https://github.com/filebrowser/filebrowser</p>
