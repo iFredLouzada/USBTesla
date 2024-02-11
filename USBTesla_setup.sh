@@ -15,6 +15,16 @@
 echo "Updating and upgrading Raspberry Pi..."
 sudo apt-get update
 
+# Install the watchdog library
+echo "Installing the watchdog library"
+sudo apt-get install pip -y
+sudo pip3 install watchdog
+
+# Download the usb_share.py script
+echo "Downloading the usb_share.py script..."
+sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/usb_share.py -O /usr/local/share/usb_share.py
+sudo chmod +x /usr/local/share/usb_share.py
+
 # Configure Raspberry Pi settings for USB gadget mode
 # Enables the USB driver for gadget mode
 echo "Configuring Raspberry Pi for USB gadget mode"
@@ -65,16 +75,6 @@ sync
 
 # Enable mass storage device
 #sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1
-
-# Install the watchdog library
-echo "Installing the watchdog library"
-sudo apt-get install pip -y
-sudo pip3 install watchdog
-
-# Download the usb_share.py script
-echo "Downloading the usb_share.py script..."
-sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/usb_share.py -O /usr/local/share/usb_share.py
-sudo chmod +x /usr/local/share/usb_share.py
 
 # Create a systemd service unit file for usbshare
 echo "Creating systemd service unit file for usbshare"
