@@ -20,8 +20,10 @@ A simple and quick way to create a wifi usb drive using a Raspberry Pi SBC to ea
 <h2> Installation instructions</h2>
 
 <p>There are two steps you'll need to complete before installing USBTesla.</p>
-<p>- Prepare the Raspberry Pi</p>
-<p>- Power On and Connect to the Raspberry Pi</p>
+
+Step 1: [Prepare your Raspberry Pi Zero](https://github.com/iFredLouzada/USBTesla/wiki/Preparing-the-hardware)
+Step 2: [Connect to your Raspberry Pi Zero](https://github.com/iFredLouzada/USBTesla/wiki/Power-On-and-Connect-to-the-Raspberry-Pi)
+
 
 <p>After these two steps, installation is very simple. </p>
 <p>Just run the following command from your Pi</p>
