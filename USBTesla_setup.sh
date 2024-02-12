@@ -19,6 +19,7 @@ sudo apt-get update
 echo "Installing the watchdog library"
 sudo apt-get install pip -y
 sudo pip3 install watchdog
+sudo apt-get install git -y
 
 # Download the usb_share.py script
 echo "Downloading the usb_share.py script..."
