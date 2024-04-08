@@ -37,6 +37,13 @@ do
   esac
 done
 
+# Creating the storage area based on selected size
+
+echo "Creating and formatting the USB storage file (Size: $size_option) "
+echo "Sit back and relax, depending on the size you picked this might take some time ..."
+sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size status=progress
+sudo mkdosfs /piusb.bin -F 32 -I
+
 # Update Raspberry Pi for good luck
 echo "Updating and upgrading Raspberry Pi..."
 sudo apt-get update
@@ -57,15 +64,6 @@ sudo chmod +x /usr/local/share/usb_share.py
 echo "Configuring Raspberry Pi for USB gadget mode"
 echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt >/dev/null
 echo "dwc2" | sudo tee -a /etc/modules >/dev/null
-
-
-
-# Creating the storage area based on selected size
-
-echo "Creating and formatting the USB storage file (Size: $size_option) "
-echo "Sit back and relax, depending on the size you picked this might take some time ..."
-sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size status=progress
-sudo mkdosfs /piusb.bin -F 32 -I
 
 # Create mount point and update fstab
 
