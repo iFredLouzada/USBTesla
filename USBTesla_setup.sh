@@ -119,6 +119,11 @@ sudo systemctl daemon-reload
 sudo systemctl enable filebrowser.service
 sudo systemctl start filebrowser.service
 
+# Create routine to install the Wifi portion of it
+
+
+
+
 # Message for the user
 PI_IP=$(hostname -I | awk '{print $1}')
 PI_HOSTNAME=$(hostname)
