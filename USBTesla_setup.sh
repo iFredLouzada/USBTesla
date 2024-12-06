@@ -154,7 +154,9 @@ PI_IP=$(hostname -I | awk '{print $1}')
 PI_HOSTNAME=$(hostname)
 clear
 echo "----------------------------------------------------------------------------------------------------------"
-echo "Setup complete. You can access Filebrowser by opening a web browser and visiting the following URL:"
+echo "If you followed the setup your raspberry pi will connect to your wifi network"
+echo "when detected or otherwise become an access point you can connect directly to."
+echo "You can access Filebrowser by opening a web browser and visiting the following URL:"
 echo "Using IP address: http://${PI_IP}:8080"
 echo "Using hostname: http://${PI_HOSTNAME}.local:8080"
 echo "The default username is 'admin' and the default password is 'admin'."
