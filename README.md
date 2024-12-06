@@ -2,15 +2,18 @@
 
 A simple and quick way to create a wifi usb drive using a Raspberry Pi SBC to easily change your boombox and lockchime sounds over your home network via the browser.
 
-<h2>A holiday update feature</h2>
+<h2>A Holiday Update feature</h2>
 
-<p>Tesla's 2023 Holiday update allows you to change the lock chime sound of your car makes when you lock it, this is called the Lock chime. In order to change the sound you need to plug in a USB Drive to your car and have a file called LockChime.wav on the root of your USB.</p>
+<p>Tesla's 2023 Holiday update allowed you to change the lock chime of your car, that is the sound you car makes when you lock it. In order to change the sound you need to plug in a USB Drive to your car and have a file called LockChime.wav on the root of this USB.</p>
+
+<p>According to Tesla:</p>
 <p>For vehicles equipmed with the Pedestrian Warning Sound Tesla allows you to change the sound of your Horn. This can be used to play any sound (to the outside) via the external loudspeaker.</p>
 <p>All you need to play your own sounds is a USB stick. This can be a "retrofitted" one (IMPORTANT The USB stick must be formatted in ExFAT format), but also the original USB stick supplied by Tesla, which is located in the glove compartment.</p>
 
 <h2>But who wants to keep bringing the USB drive inside to change these sounds?</h2>
 
-<p>This is USBTesla. Just a script that automates the process to create the USB Drive that can be accessed via your browser. After the instalation is complete you can access the files by poiting your browser to http://USBTesla.local </p>
+<p>Enter USBTesla. </p>
+<p>Just a script that automates the process to create the USB Drive that can be accessed via your browser. After the instalation is complete you can access the files by poiting your browser to http://USBTesla.local </p>
 
 <h2>Requirements:</h2>
 
@@ -24,8 +27,11 @@ A simple and quick way to create a wifi usb drive using a Raspberry Pi SBC to ea
 
 Step 1: [Prepare your Raspberry Pi Zero](https://github.com/iFredLouzada/USBTesla/wiki/Preparing-the-hardware)
 
+During this part you will prepare the hardware that will become your Wireless USB for your Tesla, thats the whole point.
+
 Step 2: [Connect to your Raspberry Pi Zero](https://github.com/iFredLouzada/USBTesla/wiki/Connect-to-the-Raspberry-Pi)
 
+During this step, I will guide you on how to connect to your Wireless USB from your computer to install the USBTesla software.
 
 <p>After these two steps, just run the following command from your Pi</p>
 <code>bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/USBTesla_setup.sh)"</code>

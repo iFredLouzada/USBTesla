@@ -120,23 +120,15 @@ sudo systemctl enable filebrowser.service
 sudo systemctl start filebrowser.service
 
 # Create routine to install the Wifi portion of it
+echo "Setting Locale to CA"
 sudo raspi-config nonint do_wifi_country CA
+sleep 3
+
+echo "Downloading and installing Autohotspot script"
 curl "https://www.raspberryconnect.com/images/hsinstaller/Autohotspot-Setup.tar.xz" -o AutoHotspot-Setup.tar.xz
 tar xf AutoHotspot-Setup.tar.xz
 cd Autohotspot
 sudo ./autohotspot-setup.sh
-# Most clear version using heredoc
-sudo ./autohotspot-setup.sh << EOF
-2      # Select option 2
-
-       # First Enter press
-       # Second Enter press
-7
-USBTesla
-Plaid2022
-
-8
-EOF
 
 # 1 = Install Autohotspot with eth0 access for Connected Devices
 # 2 = Install Autohotspot with No eth0 for connected devices  
@@ -148,19 +140,49 @@ EOF
 # 8 = Exit
 
 
+# Let's play keystrokes!!
+(
+echo "2"
+sleep 1
+echo ""
+sleep 1
+echo ""
+sleep 1
+echo "7"
+sleep 1
+echo "USBTesla"
+sleep 1
+echo "Plaid2022"
+sleep 1
+echo ""
+sleep 1
+echo "8"
+) | sudo ./autohotspot-setup.sh
+
+# Placeholder to prepare the flask script
+cd ..
+mkdir tesla-wave-mgmt
+cd tesla-wave-mgmt
+python3 -m venv .venv
+. .venv/bin/activate
+
+
+sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/usb_share.py -O /usr/local/share/usb_share.py
+
 
 # Message for the user
 PI_IP=$(hostname -I | awk '{print $1}')
 PI_HOSTNAME=$(hostname)
 clear
 echo "----------------------------------------------------------------------------------------------------------"
-echo "If you followed the setup your raspberry pi will connect to your wifi network"
-echo "when detected or otherwise become an access point you can connect directly to."
 echo "You can access Filebrowser by opening a web browser and visiting the following URL:"
 echo "Using IP address: http://${PI_IP}:8080"
 echo "Using hostname: http://${PI_HOSTNAME}.local:8080"
 echo "The default username is 'admin' and the default password is 'admin'."
 echo "----------------------------------------------------------------------------------------------------------"
+
+
+
 # Start a 10-second countdown
 echo "Rebooting the Raspberry Pi in 10 seconds, after reboot the pi will restart and come back as a usb storage device"
 echo "Test that it works on your computer first before moving it to your car"

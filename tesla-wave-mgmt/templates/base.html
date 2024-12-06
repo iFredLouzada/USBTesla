@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla Sound Manager</title>
+    
+    {% block theme_vars %}{% endblock %}
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <h1>Tesla Sound Manager</h1>
+        <div id="errorContainer"></div>
+        <div id="fileList" class="file-list"></div>
+        
+        <div class="template-selector">
+            <div class="selector-group">
+                <label for="templateSelect">Template Style</label>
+                <select id="templateSelect" onchange="changeTemplate(this.value)">
+                    {% for template_file, config in templates.items() %}
+                    <option value="{{ template_file }}" {% if template_file == current_template %}selected{% endif %}>
+                        {{ config.name }} - {{ config.description }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="selector-group">
+                <label for="themeSelect">Color Theme</label>
+                <select id="themeSelect" onchange="changeTheme(this.value)">
+                    <option value="default" {% if current_theme == 'default' %}selected{% endif %}>Default Blue</option>
+                    <option value="dark" {% if current_theme == 'dark' %}selected{% endif %}>Dark Mode</option>
+                    <option value="light" {% if current_theme == 'light' %}selected{% endif %}>Light Mode</option>
+                </select>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Brought to you with love by <a href="https://x.com/fredlouzada" target="_blank">x.com/fredlouzada</a></p>
+        </footer>
+    </div>
+
+    <div id="namePrompt" class="name-prompt" style="display: none;">
+        <div class="prompt-content">
+            <h3>Name Required</h3>
+            <p>Please provide a name for the current lockchime.wav file:</p>
+            <input type="text" id="newName" class="prompt-input" placeholder="Enter name">
+            <button class="btn btn-activate" onclick="submitNewName()">Save</button>
+        </div>
+    </div>
+
+    {% block theme_definitions %}{% endblock %}
+    
+    <script>
+        let audio = null;
+        let loadingFiles = false;
+
+        function changeTheme(themeName) {
+            const root = document.documentElement;
+            const themeVars = themes[themeName] || themes.default;
+            
+            Object.entries(themeVars).forEach(([property, value]) => {
+                root.style.setProperty(property, value);
+            });
+            
+            const url = new URL(window.location);
+            url.searchParams.set('theme', themeName);
+            window.history.pushState({}, '', url);
+        }
+
+        async function loadFiles() {
+            if (loadingFiles) return;
+            loadingFiles = true;
+            
+            try {
+                const response = await fetch('/api/files');
+                const data = await response.json();
+                
+                const errorContainer = document.getElementById('errorContainer');
+                errorContainer.innerHTML = '';
+                
+                if (data.status.status === 'missing') {
+                    errorContainer.innerHTML = '<div class="error-banner">No active sound file. Please activate one.</div>';
+                } else if (data.status.status === 'duplicate') {
+                    errorContainer.innerHTML = '<div class="error-banner">Multiple lockchime.wav files detected. Please fix this issue.</div>';
+                } else if (data.status.status === 'unknown') {
+                    document.getElementById('namePrompt').style.display = 'flex';
+                }
+                
+                const fileList = document.getElementById('fileList');
+                fileList.innerHTML = data.files.map(file => `
+                    <div class="file-item ${file.is_active ? 'active' : ''}">
+                        <button class="play-btn" onclick="playSound('${file.filename}')">▶</button>
+                        <div class="file-info">
+                            <h3 class="file-name">
+                                ${file.filename}
+                                ${file.is_active ? `(Name: ${file.original_name})` : ''}
+                            </h3>
+                            <div class="file-meta">${file.duration}s - ${file.size}KB</div>
+                        </div>
+                        <div class="actions">
+                            ${!file.is_active ? `
+                                <button class="btn btn-activate" onclick="activateFile('${file.filename}')">
+                                    Activate
+                                </button>
+                            ` : ''}
+                            ${!file.is_active ? `
+                                <button class="btn btn-delete" onclick="deleteFile('${file.filename}')">
+                                    Delete
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading files:', error);
+            } finally {
+                loadingFiles = false;
+            }
+        }
+
+        async function playSound(filename) {
+            if (audio) {
+                audio.pause();
+                audio.src = '';
+                audio.load();
+                audio = null;
+            }
+            const timestamp = new Date().getTime();
+            audio = new Audio();
+            audio.src = `/api/play/${filename}?nocache=${timestamp}`;
+            await audio.load();
+            await audio.play();
+        }
+
+        async function activateFile(filename) {
+            try {
+                const response = await fetch('/api/activate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    await loadFiles();
+                } else {
+                    alert('Error activating file: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error activating file: ' + error);
+            }
+        }
+
+        async function deleteFile(filename) {
+            try {
+                const response = await fetch(`/api/delete/${filename}`, { 
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    await loadFiles();
+                } else {
+                    alert('Error deleting file: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error deleting file: ' + error);
+            }
+        }
+
+        async function submitNewName() {
+            const newName = document.getElementById('newName').value;
+            if (!newName) return;
+            
+            try {
+                const response = await fetch('/api/activate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ new_name: newName })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('namePrompt').style.display = 'none';
+                    await loadFiles();
+                } else {
+                    alert('Error saving name: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error saving name: ' + error);
+            }
+        }
+
+        function changeTemplate(templateName) {
+            const url = new URL(window.location);
+            url.searchParams.set('template', templateName);
+            window.location.href = url;
+        }
+
+        loadFiles();
+        document.addEventListener('DOMContentLoaded', () => {
+            changeTheme('{{ current_theme }}');
+        });
+    </script>
+</body>
+</html>

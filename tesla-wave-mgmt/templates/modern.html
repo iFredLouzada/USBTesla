@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block theme_vars %}
+<style id="themeStyles">
+    :root {
+        --bg-color: #f0f2f5;
+        --card-bg: white;
+        --text-color: #1a1a1a;
+        --primary-color: #2563eb;
+        --hover-color: #1d4ed8;
+        --border-color: #e5e7eb;
+        --error-bg: #fef2f2;
+        --error-color: #dc2626;
+        --active-bg: #eff6ff;
+        --meta-color: #6b7280;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        --radius: 12px;
+    }
+</style>
+{% endblock %}
+
+{% block styles %}
+<style>
+    * { box-sizing: border-box; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.5;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-color);
+    }
+    .template-selector {
+        margin-bottom: 24px;
+        padding: 20px;
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .selector-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .selector-group label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--text-color);
+    }
+    select {
+        appearance: none;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 12px;
+        width: 100%;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    select:hover {
+        border-color: var(--primary-color);
+    }
+    select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px var(--primary-color);
+    }
+    .error-banner {
+        background: var(--error-bg);
+        color: var(--error-color);
+        padding: 16px;
+        margin-bottom: 24px;
+        border-radius: var(--radius);
+        border-left: 4px solid var(--error-color);
+    }
+    .file-list {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+    .file-item {
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border-color);
+        gap: 16px;
+        transition: all 0.2s;
+    }
+    .file-item:hover {
+        background: var(--active-bg);
+    }
+    .file-item.active {
+        background: var(--active-bg);
+        border-left: 4px solid var(--primary-color);
+    }
+    .play-btn {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 18px;
+    }
+    .play-btn:hover {
+        background: var(--hover-color);
+        transform: scale(1.1);
+    }
+    .file-info {
+        flex: 1;
+        min-width: 0;
+    }
+    .file-name {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .file-meta {
+        font-size: 0.875rem;
+        color: var(--meta-color);
+        margin-top: 4px;
+    }
+    .actions {
+        display: flex;
+        gap: 12px;
+    }
+    .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: var(--radius);
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+    .btn-activate {
+        background: var(--primary-color);
+        color: white;
+    }
+    .btn-activate:hover {
+        background: var(--hover-color);
+    }
+    .btn-delete {
+        background: #dc2626;
+        color: white;
+    }
+    .btn-delete:hover {
+        background: #b91c1c;
+    }
+    .name-prompt {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        backdrop-filter: blur(4px);
+    }
+    .prompt-content {
+        background: var(--card-bg);
+        padding: 24px;
+        border-radius: var(--radius);
+        width: 100%;
+        max-width: 400px;
+        box-shadow: var(--shadow);
+    }
+    .prompt-input {
+        width: 100%;
+        padding: 12px;
+        margin: 12px 0;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        font-size: 1rem;
+    }
+    @media (max-width: 640px) {
+        .template-selector {
+            grid-template-columns: 1fr;
+        }
+        .file-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .actions {
+            width: 100%;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block theme_definitions %}
+<script>
+const themes = {
+    default: {
+        '--bg-color': '#f0f2f5',
+        '--card-bg': 'white',
+        '--text-color': '#1a1a1a',
+        '--primary-color': '#2563eb',
+        '--hover-color': '#1d4ed8',
+        '--border-color': '#e5e7eb',
+        '--error-bg': '#fef2f2',
+        '--error-color': '#dc2626',
+        '--active-bg': '#eff6ff',
+        '--meta-color': '#6b7280'
+    },
+    dark: {
+        '--bg-color': '#121212',
+        '--card-bg': '#1e1e1e',
+        '--text-color': '#ffffff',
+        '--primary-color': '#3b82f6',
+        '--hover-color': '#2563eb',
+        '--border-color': '#333333',
+        '--error-bg': '#dc262622',
+        '--error-color': '#f87171',
+        '--active-bg': '#1e40af22',
+        '--meta-color': '#9ca3af'
+    },
+    light: {
+        '--bg-color': '#ffffff',
+        '--card-bg': '#ffffff',
+        '--text-color': '#111827',
+        '--primary-color': '#2563eb',
+        '--hover-color': '#1d4ed8',
+        '--border-color': '#e5e7eb',
+        '--error-bg': '#fef2f2',
+        '--error-color': '#dc2626',
+        '--active-bg': '#eff6ff',
+        '--meta-color': '#6b7280'
+    }
+};
+</script>
+{% endblock %}
