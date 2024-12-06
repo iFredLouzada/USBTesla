@@ -138,11 +138,11 @@ cd Autohotspot
 # 6 = Autohotspot: Force to an access point or connect to WiFi network if a known SSID is in range
 # 7 = Change the access points SSID and password
 # 8 = Exit
-
+sleep 3
 # Let's play keystrokes!!
 (
 echo "2"
-sleep 5
+sleep 15
 echo ""
 sleep 5
 echo ""
@@ -166,7 +166,7 @@ sudo mkdir tesla-wave-mgmt
 cd tesla-wave-mgmt
 sudo python3 -m venv .venv
 . .venv/bin/activate
-pip3 install soundfile
+sudo pip3 install soundfile
 
 # Downloading files
 echo "Downloading template files and WebApp from GitHub"
