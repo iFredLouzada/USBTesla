@@ -46,6 +46,7 @@ echo "Installing the watchdog library"
 sudo apt-get install pip -y
 sudo pip3 install watchdog
 sudo apt-get install git -y
+sudo apt-get install python3-venv -y
 
 # Download the usb_share.py script
 echo "Downloading the usb_share.py script..."
@@ -141,19 +142,19 @@ cd Autohotspot
 # Let's play keystrokes!!
 (
 echo "2"
-sleep 1
+sleep 5
 echo ""
-sleep 1
+sleep 5
 echo ""
-sleep 1
+sleep 5
 echo "7"
-sleep 1
+sleep 5
 echo "USBTesla"
-sleep 1
+sleep 5
 echo "Plaid2022"
-sleep 1
+sleep 5
 echo ""
-sleep 1
+sleep 5
 echo "8"
 ) | sudo ./autohotspot-setup.sh
 
@@ -163,7 +164,7 @@ echo "Installing WebApp for file management"
 cd ..
 sudo mkdir tesla-wave-mgmt
 cd tesla-wave-mgmt
-python3 -m venv .venv
+sudo python3 -m venv .venv
 . .venv/bin/activate
 pip3 install soundfile
 
