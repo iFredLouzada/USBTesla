@@ -198,4 +198,4 @@ if __name__ == '__main__':
     if not os.path.exists(WAV_DIRECTORY):
         print(f"Error: WAV directory {WAV_DIRECTORY} not found")
         exit(1)
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)

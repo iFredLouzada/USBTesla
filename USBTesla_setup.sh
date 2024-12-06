@@ -139,7 +139,6 @@ sudo ./autohotspot-setup.sh
 # 7 = Change the access points SSID and password
 # 8 = Exit
 
-
 # Let's play keystrokes!!
 (
 echo "2"
@@ -159,16 +158,50 @@ sleep 1
 echo "8"
 ) | sudo ./autohotspot-setup.sh
 
-# Placeholder to prepare the flask script
+# Preparing to install the Flask interface management
+echo "Installing WebApp for file management"
+
 cd ..
 mkdir tesla-wave-mgmt
 cd tesla-wave-mgmt
 python3 -m venv .venv
 . .venv/bin/activate
+pip3 install soundfile
 
+# Downloading files
+echo "Downloading template files and WebApp from GitHub"
 
-sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/usb_share.py -O /usr/local/share/usb_share.py
+sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/app.py -O app.py
+mkdir templates
+cd templates
+sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/templates/base.html -O base.html
+sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/templates/minimal.html -O minimal.html
+sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/templates/modern.html -O modern.html
+cd ..
 
+# Create a service file
+echo "Creating a service file for auto start"
+
+sudo bash -c 'cat << EOF > /etc/systemd/system/tesla-sound-manager.service
+[Unit]
+Description=Tesla Sound Manager
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/tesla-wave-mgmt
+Environment="PATH=/home/pi/tesla-wave-mgmt/.venv/bin"
+ExecStart=/home/pi/tesla-wave-mgmt/.venv/bin/python3 app.py
+
+[Install]
+WantedBy=multi-user.target"
+EOF'
+
+# Create a service file
+echo "Enabling web interface"
+
+sudo systemctl enable tesla-sound-manager
+sudo systemctl start tesla-sound-manager
 
 # Message for the user
 PI_IP=$(hostname -I | awk '{print $1}')
@@ -179,9 +212,12 @@ echo "You can access Filebrowser by opening a web browser and visiting the follo
 echo "Using IP address: http://${PI_IP}:8080"
 echo "Using hostname: http://${PI_HOSTNAME}.local:8080"
 echo "The default username is 'admin' and the default password is 'admin'."
+echo "         "
+echo "To access the web interface that manages which Lockchime file will be active, visit: "
+echo "Using IP address: http://${PI_IP}"
+echo "Using hostname: http://${PI_HOSTNAME}.local"
+echo "Connecting from Tesla is not yet supported but in the works :)"
 echo "----------------------------------------------------------------------------------------------------------"
-
-
 
 # Start a 10-second countdown
 echo "Rebooting the Raspberry Pi in 10 seconds, after reboot the pi will restart and come back as a usb storage device"
