@@ -166,6 +166,7 @@ sudo mkdir tesla-wave-mgmt
 cd tesla-wave-mgmt
 sudo python3 -m venv .venv
 . .venv/bin/activate
+sudo pip3 install Flask
 sudo pip3 install soundfile
 
 # Downloading files
