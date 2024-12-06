@@ -120,15 +120,14 @@ sudo systemctl enable filebrowser.service
 sudo systemctl start filebrowser.service
 
 # Create routine to install the Wifi portion of it
-echo "Setting Locale to CA"
-sudo raspi-config nonint do_wifi_country CA
+# echo "Setting Locale to CA"
+# sudo raspi-config nonint do_wifi_country CA
 sleep 3
 
 echo "Downloading and installing Autohotspot script"
 curl "https://www.raspberryconnect.com/images/hsinstaller/Autohotspot-Setup.tar.xz" -o AutoHotspot-Setup.tar.xz
 tar xf AutoHotspot-Setup.tar.xz
 cd Autohotspot
-sudo ./autohotspot-setup.sh
 
 # 1 = Install Autohotspot with eth0 access for Connected Devices
 # 2 = Install Autohotspot with No eth0 for connected devices  
