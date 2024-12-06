@@ -161,7 +161,7 @@ echo "8"
 echo "Installing WebApp for file management"
 
 cd ..
-mkdir tesla-wave-mgmt
+sudo mkdir tesla-wave-mgmt
 cd tesla-wave-mgmt
 python3 -m venv .venv
 . .venv/bin/activate
@@ -171,7 +171,7 @@ pip3 install soundfile
 echo "Downloading template files and WebApp from GitHub"
 
 sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/app.py -O app.py
-mkdir templates
+sudo mkdir templates
 cd templates
 sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/templates/base.html -O base.html
 sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/templates/minimal.html -O minimal.html
