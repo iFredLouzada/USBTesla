@@ -107,7 +107,7 @@ Description=File Browser
 After=network.target
 
 [Service]
-ExecStart=filebrowser -r /mnt/usb_share -p 80 -a 0.0.0.0 -d /home/pi/database.db
+ExecStart=filebrowser -r /mnt/usb_share -p 8080 -a 0.0.0.0 -d /home/pi/database.db
 
 [Install]
 WantedBy=multi-user.target
@@ -120,7 +120,32 @@ sudo systemctl enable filebrowser.service
 sudo systemctl start filebrowser.service
 
 # Create routine to install the Wifi portion of it
+sudo raspi-config nonint do_wifi_country CA
+curl "https://www.raspberryconnect.com/images/hsinstaller/Autohotspot-Setup.tar.xz" -o AutoHotspot-Setup.tar.xz
+tar xf AutoHotspot-Setup.tar.xz
+cd Autohotspot
+sudo ./autohotspot-setup.sh
+# Most clear version using heredoc
+sudo ./autohotspot-setup.sh << EOF
+2      # Select option 2
 
+       # First Enter press
+       # Second Enter press
+7
+USBTesla
+Plaid2022
+
+8
+EOF
+
+# 1 = Install Autohotspot with eth0 access for Connected Devices
+# 2 = Install Autohotspot with No eth0 for connected devices  
+# 3 = Install a Permanent Access Point with eth0 access for connected devices
+# 4 = Uninstall Autohotspot or permanent access point
+# 5 = Add a new wifi network to the Pi (SSID) or update the password for an existing one
+# 6 = Autohotspot: Force to an access point or connect to WiFi network if a known SSID is in range
+# 7 = Change the access points SSID and password
+# 8 = Exit
 
 
 
@@ -130,8 +155,8 @@ PI_HOSTNAME=$(hostname)
 clear
 echo "----------------------------------------------------------------------------------------------------------"
 echo "Setup complete. You can access Filebrowser by opening a web browser and visiting the following URL:"
-echo "Using IP address: http://${PI_IP}"
-echo "Using hostname: http://${PI_HOSTNAME}.local"
+echo "Using IP address: http://${PI_IP}:8080"
+echo "Using hostname: http://${PI_HOSTNAME}.local:8080"
 echo "The default username is 'admin' and the default password is 'admin'."
 echo "----------------------------------------------------------------------------------------------------------"
 # Start a 10-second countdown
