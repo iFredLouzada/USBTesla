@@ -11,31 +11,55 @@ PS3="Select USB storage size (in GB): "
 options=("4GB" "8GB" "16GB")
 select size_option in "${options[@]}"
 do
-  case $size_option in
-    "4GB")
-      file_size=4096  # 4GB in megabytes
-      break
-      ;;
-    "8GB")
-      file_size=8192  # 8GB in megabytes
-      break
-      ;;
-    "16GB")
-      file_size=16384  # 16GB in megabytes
-      break
-      ;;
-    *)
-      echo "Invalid option, please select a valid size."
-      ;;
-  esac
+    case $size_option in
+        "4GB")
+            file_size=4096  # 4GB in megabytes
+            break
+            ;;
+        "8GB")
+            file_size=8192  # 8GB in megabytes
+            break
+            ;;
+        "16GB")
+            file_size=16384  # 16GB in megabytes
+            break
+            ;;
+        *)
+            echo "Invalid option, please select a valid size."
+            ;;
+    esac
 done
 
 # Creating the storage area based on selected size
+echo "Creating and formatting the USB storage file (Size: $size_option)"
+echo "Sit back and relax, depending on the size you picked this might take some time..."
 
-echo "Creating and formatting the USB storage file (Size: $size_option) "
-echo "Sit back and relax, depending on the size you picked this might take some time ..."
-sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size status=progress
-sudo mkdosfs /piusb.bin -F 32 -I
+# Try fallocate first (much faster)
+if command -v fallocate &> /dev/null; then
+    echo "Using fallocate to create storage file..."
+    if ! sudo fallocate -l ${file_size}M /piusb.bin; then
+        echo "fallocate failed, falling back to dd..."
+        sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size status=progress
+    fi
+else
+    # Fallback to dd if fallocate isn't available
+    sudo dd bs=1M if=/dev/zero of=/piusb.bin count=$file_size status=progress
+fi
+
+# Check if file was created successfully
+if [ ! -f /piusb.bin ]; then
+    echo "Error: Failed to create storage file!"
+    exit 1
+fi
+
+# Format the drive with a label
+echo "Formatting storage file..."
+sudo mkfs.vfat -F 32 -I /piusb.bin -n "USBDRIVE"
+
+# Verify final size
+actual_size=$(du -h /piusb.bin | cut -f1)
+echo "USB storage file created successfully"
+echo "Final file size: $actual_size"
 
 # Update Raspberry Pi for good luck
 echo "Updating and upgrading Raspberry Pi..."
@@ -120,50 +144,12 @@ sudo systemctl daemon-reload
 sudo systemctl enable filebrowser.service
 sudo systemctl start filebrowser.service
 
-# Create routine to install the Wifi portion of it
-# echo "Setting Locale to CA"
-# sudo raspi-config nonint do_wifi_country CA
-sleep 3
-
-echo "Downloading and installing Autohotspot script"
-curl "https://www.raspberryconnect.com/images/hsinstaller/Autohotspot-Setup.tar.xz" -o AutoHotspot-Setup.tar.xz
-tar xf AutoHotspot-Setup.tar.xz
-cd Autohotspot
-
-# 1 = Install Autohotspot with eth0 access for Connected Devices
-# 2 = Install Autohotspot with No eth0 for connected devices  
-# 3 = Install a Permanent Access Point with eth0 access for connected devices
-# 4 = Uninstall Autohotspot or permanent access point
-# 5 = Add a new wifi network to the Pi (SSID) or update the password for an existing one
-# 6 = Autohotspot: Force to an access point or connect to WiFi network if a known SSID is in range
-# 7 = Change the access points SSID and password
-# 8 = Exit
-sleep 3
-# Let's play keystrokes!!
-(
-echo "2"
-sleep 15
-echo ""
-sleep 5
-echo ""
-sleep 5
-echo "7"
-sleep 5
-echo "USBTesla"
-sleep 5
-echo "Plaid2022"
-sleep 5
-echo ""
-sleep 5
-echo "8"
-) | sudo ./autohotspot-setup.sh
-
 # Preparing to install the Flask interface management
 echo "Installing WebApp for file management"
 
-cd ..
-sudo mkdir tesla-wave-mgmt
-cd tesla-wave-mgmt
+cd /home/pi/
+sudo mkdir /home/pi/tesla-wave-mgmt
+cd /home/pi/tesla-wave-mgmt/
 sudo python3 -m venv .venv
 . .venv/bin/activate
 sudo pip3 install Flask
@@ -174,7 +160,7 @@ echo "Downloading template files and WebApp from GitHub"
 
 sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/app.py -O app.py
 sudo mkdir templates
-cd templates
+cd /home/pi/tesla-wave-mgmt/templates
 sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/templates/base.html -O base.html
 sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/templates/minimal.html -O minimal.html
 sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/refs/heads/main/tesla-wave-mgmt/templates/modern.html -O modern.html
