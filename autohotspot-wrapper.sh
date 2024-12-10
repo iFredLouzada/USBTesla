@@ -8,19 +8,21 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-cd "Autohotspot"
+# Create temporary directory and move into it
+TEMP_DIR="Autohotspot"
+
 # Download and extract the original package
 echo "Downloading RaspberryConnect.com's Autohotspot installer..."
-curl -fsSL "https://www.raspberryconnect.com/images/hsinstaller/Autohotspot-Setup.tar.xz" -o AutoHotspot-Setup.tar.xz
-tar xf AutoHotspot-Setup.tar.xz
-cd Autohotspot
+sudo curl -fsSL "https://www.raspberryconnect.com/images/hsinstaller/Autohotspot-Setup.tar.xz" -o AutoHotspot-Setup.tar.xz
+sudo tar xf AutoHotspot-Setup.tar.xz
+cd $TEMP_DIR
 
 # Install expect if not present
 sudo apt-get update
 sudo apt-get install -y expect > /dev/null 2>&1
 
 # Create expect script to automate the selection
-expect << 'EOF'
+sudo expect << 'EOF'
 spawn ./autohotspot-setup.sh
 expect "Select an Option:"
 send "2\r"
@@ -32,8 +34,8 @@ expect eof
 EOF
 
 # Cleanup
-cd
-sudo rm -rf Autohotspot
+cd $HOME
+sudo rm -rf $TEMP_DIR
 
 echo "Autohotspot installation completed!"
 echo "A reboot is recommended to complete the setup."
