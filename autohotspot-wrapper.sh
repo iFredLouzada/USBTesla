@@ -7,6 +7,7 @@ if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
 fi
+sudo raspi-config nonint do_wifi_country CA
 
 # Create temporary directory and move into it
 TEMP_DIR="Autohotspot"
