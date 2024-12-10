@@ -67,10 +67,11 @@ sudo apt-get update
 
 # Install the watchdog library
 echo "Installing the watchdog library"
-sudo apt-get install pip -y
+sudo apt-get install python3-pip -y
+sudo apt-get install python3-venv -y
 sudo pip3 install watchdog
 sudo apt-get install git -y
-sudo apt-get install python3-venv -y
+
 
 # Download the usb_share.py script
 echo "Downloading the usb_share.py script..."
