@@ -72,7 +72,6 @@ sudo apt-get install python3-venv -y
 sudo pip3 install watchdog
 sudo apt-get install git -y
 
-
 # Download the usb_share.py script
 echo "Downloading the usb_share.py script..."
 sudo wget https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/usb_share.py -O /usr/local/share/usb_share.py
@@ -85,7 +84,6 @@ echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt >/dev/null
 echo "dwc2" | sudo tee -a /etc/modules >/dev/null
 
 # Create mount point and update fstab
-
 echo "Creating mount point and updating fstab"
 sudo mkdir /mnt/usb_share
 echo "/piusb.bin /mnt/usb_share vfat users,umask=000 0 2" | sudo tee -a /etc/fstab >/dev/null

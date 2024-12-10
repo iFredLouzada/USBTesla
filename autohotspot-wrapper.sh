@@ -34,6 +34,40 @@ send "8\r"
 expect eof
 EOF
 
+# Check if the first operation was successful
+if [ $? -eq 0 ]; then
+    echo "Autohotspot installation completed successfully"
+    echo "Now configuring SSID and password..."
+    
+    # Second expect script: Change SSID and password
+    sudo expect << 'EOF'
+    spawn ./autohotspot-setup.sh
+    expect "Select an Option:"
+    send "7\r"
+    expect "Enter the new Access Point SSID:"
+    send "USBTesla\r"
+    expect "Enter the hotspots new password. Minimum 8 characters"
+    send "Plaid2024\r"
+    expect "Press a key to continue"
+    send "\r"
+    expect "Select an Option:"
+    send "8\r"
+    expect eof
+EOF
+else
+    echo "Error: Autohotspot installation failed"
+    exit 1
+fi
+
+# Cleanup
+cd
+rm -rf "$TEMP_DIR"
+
+echo "Autohotspot installation and configuration completed!"
+echo "SSID: USBTesla"
+echo "Password: Plaid2024"
+echo "A reboot is recommended to complete the setup."
+
 # Cleanup
 cd $HOME
 sudo rm -rf $TEMP_DIR
