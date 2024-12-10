@@ -8,10 +8,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Create temporary directory and move into it
-TEMP_DIR=$(mktemp -d)
-cd "$TEMP_DIR"
 
+cd "Autohotspot"
 # Download and extract the original package
 echo "Downloading RaspberryConnect.com's Autohotspot installer..."
 curl -fsSL "https://www.raspberryconnect.com/images/hsinstaller/Autohotspot-Setup.tar.xz" -o AutoHotspot-Setup.tar.xz
@@ -36,7 +34,7 @@ EOF
 
 # Cleanup
 cd
-rm -rf "$TEMP_DIR"
+rm -rf Autohotspot
 
 echo "Autohotspot installation completed!"
 echo "A reboot is recommended to complete the setup."
