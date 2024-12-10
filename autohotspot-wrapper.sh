@@ -63,6 +63,7 @@ fi
 cd
 rm -rf "$TEMP_DIR"
 
+clear
 echo "Autohotspot installation and configuration completed!"
 echo "SSID: USBTesla"
 echo "Password: Plaid2024"
@@ -71,6 +72,3 @@ echo "A reboot is recommended to complete the setup."
 # Cleanup
 cd $HOME
 sudo rm -rf $TEMP_DIR
-
-echo "Autohotspot installation completed!"
-echo "A reboot is recommended to complete the setup."
