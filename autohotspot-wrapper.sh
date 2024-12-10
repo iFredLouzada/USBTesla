@@ -36,7 +36,3 @@ EOF
 
 # Cleanup
 
-echo "Autohotspot installation and configuration completed!"
-echo "SSID: USBTesla"
-echo "Password: Plaid2024"
-echo "A reboot is recommended to complete the setup."
