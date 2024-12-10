@@ -19,7 +19,7 @@ sudo tar xf AutoHotspot-Setup.tar.xz
 cd $TEMP_DIR
 
 # Install expect if not present
-sudo apt-get update
+# sudo apt-get update
 sudo apt-get install -y expect > /dev/null 2>&1
 
 # Create expect script to automate the selection
