@@ -35,7 +35,7 @@ expect eof
 EOF
 
 # Cleanup
-clear
+
 echo "Autohotspot installation and configuration completed!"
 echo "SSID: USBTesla"
 echo "Password: Plaid2024"
