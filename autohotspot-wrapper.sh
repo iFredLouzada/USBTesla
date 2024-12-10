@@ -61,7 +61,7 @@ fi
 
 # Cleanup
 cd
-rm -rf "$TEMP_DIR"
+sudo rm -rf $TEMP_DIR
 
 clear
 echo "Autohotspot installation and configuration completed!"
