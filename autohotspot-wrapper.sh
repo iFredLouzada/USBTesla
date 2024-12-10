@@ -8,7 +8,6 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-
 cd "Autohotspot"
 # Download and extract the original package
 echo "Downloading RaspberryConnect.com's Autohotspot installer..."
@@ -17,8 +16,8 @@ tar xf AutoHotspot-Setup.tar.xz
 cd Autohotspot
 
 # Install expect if not present
-apt-get update
-apt-get install -y expect > /dev/null 2>&1
+sudo apt-get update
+sudo apt-get install -y expect > /dev/null 2>&1
 
 # Create expect script to automate the selection
 expect << 'EOF'
@@ -34,7 +33,7 @@ EOF
 
 # Cleanup
 cd
-rm -rf Autohotspot
+sudo rm -rf Autohotspot
 
 echo "Autohotspot installation completed!"
 echo "A reboot is recommended to complete the setup."
