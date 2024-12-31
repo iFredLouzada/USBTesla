@@ -143,8 +143,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable filebrowser.service
 sudo systemctl start filebrowser.service
 
-echo "Installing Autohotspot..."
-sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/autohotspot-wrapper.sh)"
+# echo "Installing Autohotspot..."
+# sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/autohotspot-wrapper.sh)"
 
 # Message for the user
 PI_IP=$(hostname -I | awk '{print $1}')
