@@ -7,7 +7,7 @@
 echo "Installing WebApp for file management"
 
 # Home into tesla wave manager diretory
-sudo cd sudo mkdir /home/pi/tesla-wave-mgmt/
+sudo mkdir /home/pi/tesla-wave-mgmt/
 
 # Creating web app directories
 sudo mkdir /home/pi/tesla-wave-mgmt
