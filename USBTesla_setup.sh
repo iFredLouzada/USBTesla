@@ -119,35 +119,7 @@ sudo systemctl start usbshare.service
 
 echo "USB Share Watchdog setup complete."
 
-"""
-# Install Filebrowser
-echo "Installing Filebrowser..."
-curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 
-# Create Filebrowser systemd service file
-echo "Creating Filebrowser systemd service file..."
-sudo bash -c 'cat << EOF > /etc/systemd/system/filebrowser.service
-[Unit]
-Description=File Browser
-After=network.target
-
-[Service]
-ExecStart=filebrowser -r /mnt/usb_share -p 8080 -a 0.0.0.0 -d /home/pi/database.db
-
-[Install]
-WantedBy=multi-user.target
-EOF'
-
-# Reload systemd and enable/start Filebrowser service
-echo "Enabling and starting Filebrowser service..."
-sudo systemctl daemon-reload
-sudo systemctl enable filebrowser.service
-sudo systemctl start filebrowser.service
-
-"""
-
-# echo "Installing Autohotspot..."
-# sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/iFredLouzada/USBTesla/main/autohotspot-wrapper.sh)"
 
 # Message for the user
 PI_IP=$(hostname -I | awk '{print $1}')
@@ -158,30 +130,4 @@ echo "You can access Filebrowser by opening a web browser and visiting the follo
 echo "Using IP address: http://${PI_IP}:8080"
 echo "Using hostname: http://${PI_HOSTNAME}.local:8080"
 echo "The default username is 'admin' and the default password is 'admin'."
-echo "         "
-echo "To access the web interface that manages which Lockchime file will be active, visit: "
-echo "Using IP address: http://${PI_IP}"
-echo "Using hostname: http://${PI_HOSTNAME}.local"
-echo "Connecting from Tesla is not yet supported but in the works :)"
 echo "----------------------------------------------------------------------------------------------------------"
-
-"""
-# Start a 10-second countdown with a key press bypass
-echo "Rebooting the Raspberry Pi in 10 seconds, after reboot the Pi will restart and come back as a USB storage device."
-echo "Press any key to skip the countdown and reboot immediately."
-
-# Function to handle countdown with key press bypass
-countdown() {
-  for ((i=10; i>0; i--)); do
-    printf "\rRebooting in: %2d seconds... Press any key to skip." "$i"
-    read -t 1 -n 1 key && return
-  done
-}
-
-# Start countdown
-countdown
-
-# Final message and reboot
-printf "\rRebooting now!                     \n"
-sudo reboot
-"""
